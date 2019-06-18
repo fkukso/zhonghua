@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+
+
+    <title>zhonghua</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;        
+        height: 100%;
+      }
+      html {
+          background-color: #f8f8f8;
+      }
+      html body {
+          margin-left: auto;
+          margin-right: auto;
+          max-width: 768px;
+          background-color: #fff;
+          overflow: hidden;
+      }
+      .van-button.bottom-button {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+      }
+    </style>
+    
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+
+    <script>
+      var isWKWebview = window.__wxjs_is_wkwebview //判断是否是iOS WKWebview内核
+      var isAndroid = (/android/gi).test(navigator.appVersion)
+      var isIDevice = (/iphone|ipad/gi).test(navigator.appVersion)
+      var isTouchPad = (/hp-tablet/gi).test(navigator.appVersion)
+      // 设置标题,设置微信web的title,主要为兼容IOS微信端
+      var setDocTitle = (function() {
+
+        // iOS微信6.5.3及其之后的版本 window.__wxjs_is_wkwebview 为true时是使用WKWebview，为 false或者 “undefine”时是 UIWebview 。
+        if ((isIDevice || isTouchPad) && !window.__wxjs_is_wkwebview) {
+            return setDocTitleToIOS;
+        } else {
+            return setDocTitleToOther;
+        }
+        
+        //  微信环境下并且 'UIWebview'的苹果设备设置title
+        function setDocTitleToIOS(titleStr) {
+            var doc = document;
+            doc.title = titleStr;
+            var iframe = doc.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = "/favicon1.ico";
+
+            // iframe.src = "http://www.xiaogj.com/favicon.ico";
+            // iframe.src = "/abc/abc";
+            iframe.addEventListener("load", function() {
+                setTimeout(function() {
+                    doc.body.removeChild(iframe);
+                }, 0);
+            });
+            doc.body.appendChild(iframe);
+        }
+
+        // 其它设备设置title
+        function setDocTitleToOther(titleStr) {
+            document.title = titleStr;
+        }
+    })();
+    </script>
+    
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but zhonghua doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
